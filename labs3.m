@@ -1,42 +1,63 @@
 function output = labs3(path, prefix, first, last, digits, suffix)
 
-%
-% Read a sequence of images and correct the film defects. This is the file 
-% you have to fill for the coursework. Do not change the function 
-% declaration, keep this skeleton. You are advised to create subfunctions.
-% 
-% Arguments:
-%
-% path: path of the files
-% prefix: prefix of the filename
-% first: first frame
-% last: last frame
-% digits: number of digits of the frame number
-% suffix: suffix of the filename
-%
-% This should generate corrected images named [path]/corrected_[prefix][number].png
-%
-% Example:
-%
-% mov = labs3('../images','myimage', 0, 10, 4, 'png')
-%   -> that will load and correct images from '../images/myimage0000.png' to '../images/myimage0010.png'
-%   -> and export '../images/corrected_myimage0000.png' to '../images/corrected_myimage0010.png'
-%
-
-% Your code here
-
 % labs3('footage', 'footage_', 1, 657, 3, 'png')
-images = load_sequence(path, prefix, first, last, digits, suffix);
-images = im2double(images);
+image_data = load_sequence(path, prefix, first, last, digits, suffix);
+image_data = im2double(image_data);
+
+%detectSceneCuts(image_data);
+ 
+% first_frame = image_data(:,:,1);
+% var1 = var(first_frame(:));
+% var2 = cov(first_frame(:))/size(first_frame(:),1);
+% fprintf("first: %d, second: %d\n", var1, var2);
+
+% part ii). flicker
+corrected_data = zeros(size(image_data));
+var_n = 100/(370*476);
+
+for i=2:size(image_data,3)-1
+    curr = image_data(:,:,i);
+    prev = image_data(:,:,i-1);
+    
+    exp_Y = mean(curr(:));
+    var_Y = var(curr(:));
+    
+    exp_I = mean(prev(:));
+    var_I = var(prev(:));
+    
+    alpha = sqrt((var_Y - var_n)/var_I);
+    beta = (exp_Y - (alpha * exp_I));
+    
+    a = ((var_Y - var_n)/var_Y)*(1/alpha);
+    b = (-beta/alpha) + ((var_n/var_Y)*(exp_Y/alpha));
+    
+    corrected_data(:,:,i) = (a * curr) + b;
+end
+
+implay(image_data);
+implay(corrected_data);
+
+% corrected_data = load_sequence(path, prefix, first, last, digits, suffix);
+% implay(corrected_data);
+
+%implay(image_data);
+
+end
 
 % Part i). Detection of Scene Cuts
-n = 1;
-for i=1:last-1
-    curr = images(:,:,i);
-    next = images(:,:,i+1);
-    sqr_err = immse(curr, next);
-    if (sqr_err > 0.1)
-        fprintf("Image %i: %d \n", n, sqr_err);
+function detectSceneCuts(image_data)
+    n = 1;
+    
+    for i=1:size(image_data,3)-1
+        curr = image_data(:,:,i);
+        next = image_data(:,:,i+1);
+        sqr_err = immse(curr, next);
+        
+        if (sqr_err > 0.1)
+            % add text here
+            fprintf("Image %i: %d \n", n, sqr_err);
+        end
+        n = n + 1;
     end
-    n = n + 1;
 end
+
