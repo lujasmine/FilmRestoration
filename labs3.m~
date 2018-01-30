@@ -55,8 +55,7 @@ function corrected = flickerCorrection(imgs, start_frame, end_frame)
         
         corrected(:,:,img_num) = imhistmatch(corrected(:,:,img_num), frames_avg); 
     end
-    
-end
+    end
 
 function corrected = verticalArtefacts(imgs, start_frame, end_frame)
     corrected = imgs;
