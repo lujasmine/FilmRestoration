@@ -40,14 +40,7 @@ for n = 1 : size(scene_cut_frames,2)
     end   
 end
 
-implay([image_data, corrected]);
-
-% plot(1:476, image_data(200,:,657), 1:476, corrected(200,:,657));
-
-% figure
-% subplot(1,2,1)
-% plot(1:476, image_data(200,:,510))
-% subplot(1,2,2)
-% plot(1:476, corrected(200,:,510))
+% save_sequence(corrected, 'new_footage', 'new_footage', start_frame, 3);
+% implay([image_data, corrected]);
 
 end

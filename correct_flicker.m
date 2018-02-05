@@ -13,8 +13,8 @@ function corrected = correct_flicker(imgs, start_frame, end_frame)
 end
 
 function [start_frame, end_frame] = get_start_end_frames(curr, first, last, neighbours)
-    start_frame = curr;
-    end_frame = curr;
+    start_frame = first;
+    end_frame = last;
 
     if ((curr - neighbours) > first)
         start_frame = curr - neighbours;
