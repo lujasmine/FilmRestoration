@@ -1,34 +1,39 @@
-% TODO try with pixels AFTER doing everything else
 function corrected = correct_flicker(imgs, start_frame, end_frame)
     corrected = imgs;
-    n_frames = 4;
+    n_neighbours = 3;
     
     for img_num = start_frame:end_frame
+        curr_frame = imgs(:,:,img_num);
         
-        avg_start = img_num;
-        avg_end = img_num;
+        [avg_start, avg_end] = get_start_end_frames(img_num, ...
+            start_frame, end_frame, n_neighbours);
         
-        if ((img_num - n_frames) > start_frame)
-            avg_start = img_num - n_frames;
-        end
+        for r = 1 : size(imgs, 1)
+           for col = 1 : size(imgs, 2)
+               
+               for n = avg_start : avg_end
+               
+               sum_pixels = sum(corrected(r,col,avg_start:avg_end),3);
+               avg_pixels = sum_pixels / (avg_end - avg_start + 1);
+               
+               corrected(r,col,img_num) = avg_pixels;
+           end
+        end       
         
-        if ((img_num + n_frames) < end_frame)
-            avg_end = img_num + n_frames;
-        end
-        
-        for 
-        
-        frames_sum = sum(corrected(:,:,avg_start:avg_end),3);
-        disp(frames_sum);
-        
-        frames_avg = frames_sum / (avg_end - avg_start + 1);
-        
-%         cdf_img = cumsum(imgs(:,:,img_num));
-%         cdf_avg = cumsum()
-        
-
-        corrected(:,:,img_num) = histeq(corrected(:,:,img_num), imhist(frames_avg)); 
+        % TODO change histeq
+%         corrected(:,:,img_num) = histeq(corrected(:,:,img_num), imhist(frames_avg)); 
     end
 end
 
-function [start_frame, end_frame] = get_s
+function [start_frame, end_frame] = get_start_end_frames(curr, first, last, neighbours)
+    start_frame = curr;
+    end_frame = curr;
+
+    if ((curr - neighbours) > first)
+        start_frame = curr - neighbours;
+    end
+
+    if ((curr + neighbours) < last)
+        end_frame = curr + neighbours;
+    end
+end
