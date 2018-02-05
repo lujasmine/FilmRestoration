@@ -1,31 +1,37 @@
-function corrected = remove_blotches(imgs)
-    corrected = imgs;
-    
+function corrected = remove_blotches(imgs)    
 %     blotches_marked = detect_blotches(imgs, 1, 256);
-%     blotches_marked = detect_blotches(imgs, 34, 34);
+%     corrected = correct_blotches(blotches_marked, imgs);
+    corrected = detect_blotches(imgs, 33, 34);
+%     corrected = correct_blotches(imgs, blotches);
+    
+%     disp(blotches2(:,:,34));
+    
+    figure
+    subplot(1,3,1)
+    imshow(imgs(:,:,34))
+    subplot(1,3,2)
+    imshow(imgs(:,:,34))
+    subplot(1,3,3)
+    imshow(corrected(:,:,34))
+
+%     disp(blotches(:,:,34))
+    
 end
 
-% Blotch detection as outlined by Biemond in 'biemond1.pdf'
-function blotches_marked = detect_blotches(imgs, start_frame, end_frame)
+% S-ROD algorithm for blotch detection as outlined in 'biemond1.pdf'
+function corrected = detect_blotches(imgs, start_frame, end_frame)
 
-    blotches_marked = imgs;
+%     blotches = zeros(size(imgs));
+    corrected = imgs;
+    T1 = 0;
     
     for n = start_frame+1 : end_frame
-        prev = imgs(:,:,n-1);
-        curr = imgs(:,:,n);
-        next = imgs(:,:,n+1);
-        
-        p = zeros(size(imgs,1)-2,size(imgs,2),6);
-        for r = 2:size(imgs,1)-1
-           for col = 1:size(imgs,2)
-               p = curr;
-               p1 = 
+        for r = 2 : size(imgs,1)-1
+           for col = 1 : size(imgs,2)
+               
+               if ()
+               
            end
-        end
-        
-        % p stores the six reference pixels
-        p = zeros(size(imgs,1),size(imgs,2),6);
-        p(:,:,1) = prev_frame(:,:);
-        
+        end   
     end
 end

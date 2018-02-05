@@ -11,15 +11,16 @@ image_data = im2double(image_data);
 % corrected_data = correct_flicker(corrected_data, 497, 657);
 
 % part iii) remove blotches
-corrected_data = remove_blotches(image_data);
+% corrected_data = remove_blotches(image_data);
 
 % corrected_data = remove_v_artefacts(image_data, 497, 657); % part iv
 
 % plot(1:476, image_data(200,:,657), 1:476, corrected_data(200,:,657));
 
-% corrected_data = cameraShake(image_data); % part v
 
-% implay([image_data, corrected_data]);
+corrected_data = camera_shake(image_data); % part v
+
+implay([image_data, corrected_data]);
 
 % figure
 % subplot(1,2,1)

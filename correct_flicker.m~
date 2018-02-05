@@ -1,0 +1,34 @@
+% TODO try with pixels AFTER doing everything else
+function corrected = correct_flicker(imgs, start_frame, end_frame)
+    corrected = imgs;
+    n_frames = 4;
+    
+    for img_num = start_frame:end_frame
+        
+        avg_start = img_num;
+        avg_end = img_num;
+        
+        if ((img_num - n_frames) > start_frame)
+            avg_start = img_num - n_frames;
+        end
+        
+        if ((img_num + n_frames) < end_frame)
+            avg_end = img_num + n_frames;
+        end
+        
+        for 
+        
+        frames_sum = sum(corrected(:,:,avg_start:avg_end),3);
+        disp(frames_sum);
+        
+        frames_avg = frames_sum / (avg_end - avg_start + 1);
+        
+%         cdf_img = cumsum(imgs(:,:,img_num));
+%         cdf_avg = cumsum()
+        
+
+        corrected(:,:,img_num) = histeq(corrected(:,:,img_num), imhist(frames_avg)); 
+    end
+end
+
+function [start_frame, end_frame] = get_s
